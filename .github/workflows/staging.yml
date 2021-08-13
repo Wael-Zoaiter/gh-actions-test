@@ -1,16 +1,16 @@
-name: tag
+name: staging
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - release/*
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     env:
-      STAGE: tag
+      STAGE: staging
 
     strategy:
       matrix:
@@ -24,14 +24,25 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install NPM dependencies
         run: npm ci
-      - name: Create release
+      - name: Create tag
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ github.ref }}",
+              sha: context.sha
+            })
+      - name: Create Pre-Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: Stagin ${{ github.ref }}
           body: |
             Release body
           draft: false

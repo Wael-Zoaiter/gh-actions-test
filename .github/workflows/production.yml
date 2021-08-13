@@ -1,15 +1,15 @@
-name: publish
+name: production
 
 on:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     env:
-      STAGE: publish
+      STAGE: production
 
     strategy:
       matrix:
