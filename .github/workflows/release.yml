@@ -1,4 +1,4 @@
-name: development
+name: release
 
 on:
   release:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      STAGE: development
+      STAGE: release
 
     strategy:
       matrix:
