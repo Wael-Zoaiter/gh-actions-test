@@ -30,6 +30,17 @@ jobs:
           script: |
             return context.ref.split('/')[3]
           result-encoding: string
+      - uses: actions/github-script@v4
+        id: tag_exists
+        with:
+          script: |
+            const tag_name = github.git.getTag(${{ steps.tag_name.outputs.result }})
+            console.log('---------------', tag_name)
+            return !!tag_name
+          result-encoding: string
+      - name: Exit if tag exists
+        if: ${{ steps.tag_exists.outputs.result }} == true
+        run: exit -1
       - name: Create tag
         uses: actions/github-script@v4
         with:
