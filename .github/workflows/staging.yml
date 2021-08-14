@@ -35,7 +35,7 @@ jobs:
         with:
           script: |
             const tag_name = github.git.getTag(${{ steps.tag_name.outputs.result }})
-            console.log('---------------', tag_name)
+            console.log(tag_name)
             return !!tag_name
           result-encoding: string
       - name: Exit if tag exists
