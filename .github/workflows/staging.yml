@@ -28,7 +28,6 @@ jobs:
         id: tag_name
         with:
           script: |
-            console.log(github.git.getCommit())
             return context.ref.split('/')[3]
           result-encoding: string
       - name: Create tag
