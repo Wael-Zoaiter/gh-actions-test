@@ -30,20 +30,15 @@ jobs:
           script: |
             return context.ref.split('/')[3]
           result-encoding: string
-      - uses: actions/github-script@v4
-        id: tag_exists
-        with:
-          script: |
-            const exists = await github.git.getTag({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: "${{ steps.tag_name.outputs.result }}"
-            })
-            console.log(exists)
-            return '!!tag_name'
+      - uses: mukunku/tag-exists-action@v1.0.0
+        id: check_tag
+        with: 
+          tag: ${{ steps.tag_name.outputs.result }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
       - name: Exit if tag exists
-        if: ${{ steps.tag_exists.outputs.result }} == true
+        if: ${{ steps.check_tag.outputs.result }} == true
         run: exit -1
       - name: Create tag
         uses: actions/github-script@v4
