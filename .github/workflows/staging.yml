@@ -29,8 +29,8 @@ jobs:
         with:
           script: |
             console.log({github, context})
-            const tag_name = github.ref?.split('/')[1]
-            return tag_name
+            # const tag_name = github.ref.split('/')[1]
+            return 'tag_name'
           result-encoding: string
       - name: Create tag
         uses: actions/github-script@v4
