@@ -34,8 +34,7 @@ jobs:
         id: tag_exists
         with:
           script: |
-            const tag_name = await github.git.getTag()
-            console.log(tag_name)
+            console.log(github.git.getTag)
             return '!!tag_name'
           result-encoding: string
       - name: Exit if tag exists
