@@ -28,7 +28,7 @@ jobs:
         id: tag_name
         with:
           script: |
-            console.log({github, context})
+            const tag_name = context.ref.split('/')[1]
             return 'tag_name'
           result-encoding: string
       - name: Create tag
