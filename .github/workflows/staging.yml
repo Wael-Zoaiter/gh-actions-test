@@ -24,15 +24,22 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install NPM dependencies
         run: npm ci
+      - uses: actions/github-script@v4
+        id: tag_name
+        with:
+          script: |
+            const tag_name = github.ref.split('/')[1]
+            return tag_name
+          result-encoding: string
       - name: Create tag
-        uses: actions/github-script@v3
+        uses: actions/github-script@v4
         with:
           github-token: ${{ github.token }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ github.ref }}",
+              ref: "refs/tags/${{ steps.set-result.outputs.result }}",
               sha: context.sha
             })
       - name: Create Pre-Release
@@ -41,8 +48,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Stagin ${{ github.ref }}
+          tag_name: ${{ steps.set-result.outputs.result }}
+          release_name: Stagin ${{ steps.set-result.outputs.result }}
           body: |
             Release body
           draft: false
