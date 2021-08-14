@@ -37,7 +37,7 @@ jobs:
             const exists = await github.git.getTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              sha: ${{ steps.tag_name.outputs.result }}
+              sha: "${{ steps.tag_name.outputs.result }}"
             })
             console.log(exists)
             return '!!tag_name'
