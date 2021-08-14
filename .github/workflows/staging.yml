@@ -28,6 +28,7 @@ jobs:
         id: tag_name
         with:
           script: |
+            console.log(github.git.getCommit())
             return context.ref.split('/')[3]
           result-encoding: string
       - name: Create tag
@@ -48,8 +49,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag_name.outputs.result }}
-          release_name: Stagin ${{ steps.tag_name.outputs.result }}
+          release_name: elvira-staging-${{ steps.tag_name.outputs.result }}
           body: |
-            Release body
+            Release Note Here
           draft: false
           prerelease: true
