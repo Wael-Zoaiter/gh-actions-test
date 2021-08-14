@@ -29,7 +29,6 @@ jobs:
         with:
           script: |
             console.log({github, context})
-            # const tag_name = github.ref.split('/')[1]
             return 'tag_name'
           result-encoding: string
       - name: Create tag
@@ -40,7 +39,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ steps.set-result.outputs.result }}",
+              ref: "refs/tags/${{ steps.tag_name.outputs.result }}",
               sha: context.sha
             })
       - name: Create Pre-Release
@@ -49,8 +48,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.set-result.outputs.result }}
-          release_name: Stagin ${{ steps.set-result.outputs.result }}
+          tag_name: ${{ steps.tag_name.outputs.result }}
+          release_name: Stagin ${{ steps.tag_name.outputs.result }}
           body: |
             Release body
           draft: false
