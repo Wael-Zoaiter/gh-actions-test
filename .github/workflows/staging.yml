@@ -34,7 +34,7 @@ jobs:
         id: tag_name
         with:
           script: |
-            const tag_name = steps.extract_branch.outputs.branch.split('/')[1]
+            const tag_name = ${{steps.extract_branch.outputs.branch}}.split('/')[1]
             return tag_name
           result-encoding: string
       - name: Create tag
