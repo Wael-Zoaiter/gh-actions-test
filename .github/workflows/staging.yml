@@ -45,7 +45,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ steps.set-result.outputs.result }}",
+              ref: ${{ steps.set-result.outputs.result }},
               sha: context.sha
             })
       - name: Create Pre-Release
