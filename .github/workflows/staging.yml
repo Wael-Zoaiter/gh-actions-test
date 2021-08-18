@@ -30,7 +30,7 @@ jobs:
         id: tag_name
         with:
           script: |
-            const tag_name = github.ref.split('/')[1]
+            const tag_name = GITHUB_REF.split('/')[1]
             return tag_name
           result-encoding: string
       - name: Create tag
