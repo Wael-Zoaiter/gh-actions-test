@@ -45,7 +45,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: ${{ steps.set-result.outputs.result }},
+              ref: "refs/tags/${{ steps.tag_name.outputs.result }}",
               sha: context.sha
             })
       - name: Create Pre-Release
@@ -54,8 +54,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.set-result.outputs.result }}
-          release_name: Stagin ${{ steps.set-result.outputs.result }}
+          tag_name: ${{ steps.tag_name.outputs.result }}
+          release_name: Stagin ${{ steps.tag_name.outputs.result }}
           body: |
             Release body
           draft: false
