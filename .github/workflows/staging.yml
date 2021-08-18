@@ -26,11 +26,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install NPM dependencies
         run: npm ci
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - uses: actions/github-script@v4
         id: tag_name
         with:
           script: |
-            const tag_name = GITHUB_REF.split('/')[1]
+            const tag_name = steps.extract_branch.outputs.branch.split('/')[1]
             return tag_name
           result-encoding: string
       - name: Create tag
