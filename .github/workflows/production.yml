@@ -33,9 +33,11 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/tags/${{ steps.tag_name.outputs.result }}",
-              sha: context.sha
-            })
+            console.log('Done')
+      - name: Create tag
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            console.log('tag', steps.extract_tag.outputs.tag)
+            console.log('startsWith', startsWith(steps.extract_tag.outputs.tag, 'elvira-'))
