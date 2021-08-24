@@ -23,9 +23,19 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install NPM dependencies
         run: npm ci
-      - uses: actions/github-script@v4
-        id: tag_name
+      - name: Extract tag name
+        shell: bash
+        run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/refs/})"
+        id: extract_tag
+      - name: Create tag
+        if: ${{startsWith(steps.extract_tag.outputs.tag, 'elvira-')}}
+        uses: actions/github-script@v4
         with:
+          github-token: ${{ github.token }}
           script: |
-            console.log({context, github})
-            return ''
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ steps.tag_name.outputs.result }}",
+              sha: context.sha
+            })
