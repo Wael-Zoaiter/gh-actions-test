@@ -31,8 +31,17 @@ jobs:
             const tag_name = github.ref.split('/')[1]
             return tag_name
           result-encoding: string
+      - uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with: 
+          tag: 'v1'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: echo ${{ steps.checkTag.outputs.exists }}
       - name: Create tag
         uses: actions/github-script@v4
+        if: ${{ steps.checkTag.outputs.exists == 'false' }}
         with:
           github-token: ${{ github.token }}
           script: |
